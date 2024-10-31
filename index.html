@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מציג יחסי מסך - גרסה משופרת</title>
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 5px rgba(124, 58, 237, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(124, 58, 237, 0.5); }
+        }
+
+        @keyframes borderFlow {
+            0% { border-image-source: linear-gradient(45deg, #7c3aed, #d8b4fe); }
+            50% { border-image-source: linear-gradient(180deg, #d8b4fe, #7c3aed); }
+            100% { border-image-source: linear-gradient(315deg, #7c3aed, #d8b4fe); }
+        }
+
+        :root {
+            --purple-light: #f3f0ff;
+            --purple-medium: #d8b4fe;
+            --purple-dark: #7c3aed;
+            --gradient-start: #7c3aed;
+            --gradient-mid: #8b5cf6;
+            --gradient-end: #d8b4fe;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #7c3aed, #8b5cf6, #d8b4fe, #f3f0ff);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            padding: 2rem;
+            direction: rtl;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 2rem;
+            background: rgba(124, 58, 237, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .aspect-ratio-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .aspect-ratio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(124, 58, 237, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .aspect-ratio-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 45px rgba(124, 58, 237, 0.2);
+        }
+
+        .aspect-ratio-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .aspect-ratio-title {
+            color: var(--purple-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .recommended {
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: normal;
+            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.3);
+            animation: glowPulse 2s infinite;
+        }
+
+        .visualization {
+            border: 3px solid;
+            border-image: linear-gradient(45deg, var(--gradient-start), var(--gradient-end)) 1;
+            margin: 1rem 0;
+            position: relative;
+            transition: all 0.5s ease;
+            animation: borderFlow 3s infinite;
+        }
+
+        .visualization::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, 
+                rgba(124, 58, 237, 0.1), 
+                rgba(216, 180, 254, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .visualization:hover::after {
+            opacity: 1;
+        }
+
+        .dimensions {
+            color: var(--purple-dark);
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .dimensions:hover {
+            background: rgba(124, 58, 237, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--gradient-start), var(--gradient-end));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--purple-dark);
+        }
+
+        /* Glass Morphism Effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>מציג יחסי מסך</h1>
+    <div class="container" id="ratios-container">
+    </div>
+
+    <script>
+        const aspectRatios = [
+            { ratio: '1:2', width: 100, height: 200, name: 'יחס 1:2' },
+            { ratio: '9:16', width: 90, height: 160, name: 'יחס 9:16', recommended: 'מומלץ לסרטונים לאורך' },
+            { ratio: '2:3', width: 100, height: 150, name: 'יחס 2:3' },
+            { ratio: '3:4', width: 120, height: 160, name: 'יחס 3:4' },
+            { ratio: '5:6', width: 125, height: 150, name: 'יחס 5:6' },
+            { ratio: '4:4', width: 160, height: 160, name: 'יחס 4:4', recommended: 'ברירת המחדל' },
+            { ratio: '6:5', width: 180, height: 150, name: 'יחס 6:5' },
+            { ratio: '4:3', width: 160, height: 120, name: 'יחס 4:3' },
+            { ratio: '3:2', width: 180, height: 120, name: 'יחס 3:2' },
+            { ratio: '16:9', width: 190, height: 107, name: 'יחס 16:9', recommended: 'מומלץ לסרטונים לרוחב' },
+            { ratio: '2:1', width: 200, height: 100, name: 'יחס 2:1' }
+        ];
+
+        const container = document.getElementById('ratios-container');
+
+        aspectRatios.forEach(ratio => {
+            const card = document.createElement('div');
+            card.className = 'aspect-ratio-card glass-effect';
+            
+            const titleContent = `
+                <span>${ratio.name}</span>
+                ${ratio.recommended ? `<span class="recommended">${ratio.recommended}</span>` : ''}
+            `;
+
+            card.innerHTML = `
+                <div class="aspect-ratio-title">${titleContent}</div>
+                <div class="visualization" style="width: ${ratio.width}px; height: ${ratio.height}px"></div>
+                <div class="dimensions">${ratio.ratio}</div>
+            `;
+
+            container.appendChild(card);
+        });
+
+        // Enhanced hover effects
+        document.querySelectorAll('.visualization').forEach(vis => {
+            vis.addEventListener('mouseenter', () => {
+                const width = vis.offsetWidth;
+                const height = vis.offsetHeight;
+                vis.style.transform = 'scale(1.05)';
+                vis.style.boxShadow = '0 0 20px rgba(124, 58, 237, 0.3)';
+                vis.title = `רוחב: ${width}px, גובה: ${height}px`;
+            });
+
+            vis.addEventListener('mouseleave', () => {
+                vis.style.transform = 'scale(1)';
+                vis.style.boxShadow = 'none';
+            });
+        });
+
+        // Add random floating animation delays
+        document.querySelectorAll('.aspect-ratio-card').forEach(card => {
+            card.style.animationDelay = `${Math.random() * 2}s`;
+        });
+    </script>
+</body>
+</html>
